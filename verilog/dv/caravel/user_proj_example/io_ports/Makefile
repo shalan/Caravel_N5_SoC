@@ -34,10 +34,10 @@ all:  ${PATTERN:=.vcd}
 
 hex:  ${PATTERN:=.hex}
 
-%.vvp: %_tb.v %.hex
+%.vvp: %_tb.v %.hex test.hex
 ifeq ($(SIM),RTL)
-	iverilog -DFUNCTIONAL -DSIM -I $(BEHAVIOURAL_MODELS) \
-	-I $(PDK_PATH) -I $(IP_PATH) -I $(RTL_PATH) \
+	iverilog -DFUNCTIONAL -DSIM -DFAST -I $(BEHAVIOURAL_MODELS) \
+	-I $(PDK_PATH) -I .. -I $(RTL_PATH) \
 	$< -o $@
 else
 	iverilog -DFUNCTIONAL -DSIM -DGL -I $(BEHAVIOURAL_MODELS) \
@@ -55,6 +55,9 @@ endif
 	${GCC_PATH}/${GCC_PREFIX}-objcopy -O verilog $< $@ 
 	# to fix flash base address
 	sed -i 's/@10000000/@00000000/g' $@
+
+test.hex: ../sw_n5/test.c ../sw_n5/crt0.S ../sw_n5/link.ld 
+	$(MAKE) -C ../sw_n5/ all
 
 %.bin: %.elf
 	${GCC_PATH}/${GCC_PREFIX}-objcopy -O binary $< /dev/stdout | tail -c +1048577 > $@

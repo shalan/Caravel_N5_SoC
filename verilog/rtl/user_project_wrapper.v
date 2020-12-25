@@ -1,18 +1,3 @@
-// SPDX-FileCopyrightText: 2020 Efabless Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// SPDX-License-Identifier: Apache-2.0
-
 `default_nettype none
 /*
  *-------------------------------------------------------------
@@ -29,9 +14,9 @@
  *-------------------------------------------------------------
  */
 
-module user_project_wrapper #(
-    parameter BITS = 32
-)(
+`define MPRJ_IO_PADS 38
+
+module user_project_wrapper (
 `ifdef USE_POWER_PINS
     inout vdda1,	// User area 1 3.3V supply
     inout vdda2,	// User area 2 3.3V supply
@@ -75,50 +60,120 @@ module user_project_wrapper #(
     input   user_clock2
 );
 
-    /*--------------------------------------*/
-    /* User project is instantiated  here   */
-    /*--------------------------------------*/
+    /*
+        Caravel IO   | N5           |  Mode  
+        
+        io[13:0]     | GPIO         | Bi-directional
+        io[17:14]    | flash        | Bi-directional
+        io[18]       | flash clk    | Output
+        io[19]       | flash enable | Output
 
-    user_proj_example mprj (
-    `ifdef USE_POWER_PINS
-	.vdda1(vdda1),	// User area 1 3.3V power
-	.vdda2(vdda2),	// User area 2 3.3V power
-	.vssa1(vssa1),	// User area 1 analog ground
-	.vssa2(vssa2),	// User area 2 analog ground
-	.vccd1(vccd1),	// User area 1 1.8V power
-	.vccd2(vccd2),	// User area 2 1.8V power
-	.vssd1(vssd1),	// User area 1 digital ground
-	.vssd2(vssd2),	// User area 2 digital ground
-    `endif
+        io[20]       | UART0 RX      | Input
+        io[21]       | UART0 TX      | Output
 
-	// MGMT core clock and reset
+        io[22]       | UART1 RX      | Input
+        io[23]       | UART1 TX      | Output
 
-    	.wb_clk_i(wb_clk_i),
-    	.wb_rst_i(wb_rst_i),
+        io[24]       | SPI0 I       | Input
+        io[25]       | SPI0 O       | Output
+        io[26]       | SPI0 SSn     | Output
+        io[27]       | SPI0 CLK     | Output
 
-	// MGMT SoC Wishbone Slave
+        io[28]       | SPI1 I       | Input
+        io[29]       | SPI1 O       | Output
+        io[30]       | SPI1 SSn     | Output
+        io[31]       | SPI1 CLK     | Output
 
-	.wbs_cyc_i(wbs_cyc_i),
-	.wbs_stb_i(wbs_stb_i),
-	.wbs_we_i(wbs_we_i),
-	.wbs_sel_i(wbs_sel_i),
-	.wbs_adr_i(wbs_adr_i),
-	.wbs_dat_i(wbs_dat_i),
-	.wbs_ack_o(wbs_ack_o),
-	.wbs_dat_o(wbs_dat_o),
+        io[32]       | I2C0 IO      | Bi-directional
+        io[33]       | I2C0 IO      | Bi-directional
 
-	// Logic Analyzer
+        io[34]       | I2C1 IO      | Bi-directional
+        io[35]       | I2C1 IO      | Bi-directional
 
-	.la_data_in(la_data_in),
-	.la_data_out(la_data_out),
-	.la_oen (la_oen),
+        io[36]       |  pwm0        | Output
+        io[37]       |  pwm1        | Output
+    */
 
-	// IO Pads
+    assign io_oeb[18] = 1'b0; 
+    assign io_oeb[19] = 1'b0; 
 
-	.io_in (io_in),
-    	.io_out(io_out),
-    	.io_oeb(io_oeb)
+    assign io_oeb[20] = 1'b1; 
+    assign io_oeb[21] = 1'b0; 
+    assign io_oeb[22] = 1'b1; 
+    assign io_oeb[23] = 1'b0; 
+
+    assign io_oeb[24] = 1'b1; 
+    assign io_oeb[25] = 1'b0; 
+    assign io_oeb[26] = 1'b0; 
+    assign io_oeb[27] = 1'b0; 
+
+    assign io_oeb[28] = 1'b1; 
+    assign io_oeb[29] = 1'b0; 
+    assign io_oeb[30] = 1'b0; 
+    assign io_oeb[31] = 1'b0; 
+
+    assign io_oeb[30] = 1'b0; 
+    assign io_oeb[31] = 1'b0; 
+
+    // check csb pin -- io[3]
+    wire fdoeb;
+    
+    assign io_oeb[17:14] = {4{~fdoeb}};
+
+    soc_core core(
+
+        .HCLK(wb_clk_i), 
+	    .HRESETn(la_data_in[9]),
+	    
+        .NMI(la_data_in[8]),
+	    .SYSTICKCLKDIV(la_data_in[7:0]),
+
+        .GPIOIN_Sys0_S2(io_in[13:0]),
+        .GPIOOUT_Sys0_S2(io_out[13:0]),
+	    .GPIOPU_Sys0_S2(),
+	    .GPIOPD_Sys0_S2(),
+	    .GPIOOEN_Sys0_S2(io_oeb[13:0]),
+
+	    .fdi_Sys0_S0(io_in[17:14]),
+	    .fdo_Sys0_S0(io_out[17:14]),
+		.fdoe_Sys0_S0(fdoeb),
+        .fsclk_Sys0_S0(io_out[18]),
+	    .fcen_Sys0_S0(io_out[19]),
+		
+	    .RsRx_Sys0_SS0_S0(io_in[20]),
+        .RsTx_Sys0_SS0_S0(io_out[21]),
+
+        .RsRx_Sys0_SS0_S1(io_in[22]),
+        .RsTx_Sys0_SS0_S1(io_out[23]),
+
+        .MSI_Sys0_SS0_S2(io_in[24]),
+        .MSO_Sys0_SS0_S2(io_out[25]),
+        .SSn_Sys0_SS0_S2(io_out[26]),
+        .SCLK_Sys0_SS0_S2(io_out[27]),
+
+        .MSI_Sys0_SS0_S3(io_in[28]),
+        .MSO_Sys0_SS0_S3(io_out[29]),
+        .SSn_Sys0_SS0_S3(io_out[30]),
+        .SCLK_Sys0_SS0_S3(io_out[31]),
+
+        .scl_i_Sys0_SS0_S4(io_in[32]),
+        .scl_o_Sys0_SS0_S4(io_out[32]),
+        .scl_oen_o_Sys0_SS0_S4(io_oeb[32]),
+        .sda_i_Sys0_SS0_S4(io_in[33]),
+        .sda_o_Sys0_SS0_S4(io_out[33]),
+        .sda_oen_o_Sys0_SS0_S4(io_oeb[33]),
+
+        .scl_i_Sys0_SS0_S5(io_in[34]),
+        .scl_o_Sys0_SS0_S5(io_out[34]),
+        .scl_oen_o_Sys0_SS0_S5(io_oeb[34]),
+        .sda_i_Sys0_SS0_S5(io_in[35]),
+        .sda_o_Sys0_SS0_S5(io_out[35]),
+        .sda_oen_o_Sys0_SS0_S5(io_oeb[35]),
+
+        .pwm_Sys0_SS0_S6(io_out[36]),
+        .pwm_Sys0_SS0_S7(io_out[37])
     );
+   
 
 endmodule	// user_project_wrapper
 `default_nettype wire
