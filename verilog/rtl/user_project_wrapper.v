@@ -125,9 +125,8 @@ module user_project_wrapper (
         .VPWR(vccd1),
         .VGND(vssd1),
     `endif
-
         .HCLK(wb_clk_i), 
-	    .HRESETn(la_data_in[9]),
+	    .HRESETn(~la_data_in[9]),
 	    
         .NMI(la_data_in[8]),
 	    .SYSTICKCLKDIV(la_data_in[7:0]),

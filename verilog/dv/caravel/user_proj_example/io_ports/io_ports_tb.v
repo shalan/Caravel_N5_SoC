@@ -35,8 +35,8 @@
     `define NO_HC_CACHE
     `include "DFFRAM_beh.v"
 `else
-    // `include "user_project/IPs/DFFRAM.v"
-    // `include "user_project/IPs/DFFRAMBB.v"
+    `include "user_project/IPs/DFFRAM.v"
+    `include "user_project/IPs/DFFRAMBB.v"
 `endif
 
 `include "user_project/AHB_sys_0/AHBlite_sys_0.v"

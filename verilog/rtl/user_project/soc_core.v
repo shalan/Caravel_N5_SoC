@@ -184,6 +184,7 @@ module soc_core (
 
 	);
 
+
 	RAM_3Kx32 RAM (
 	`ifdef USE_POWER_PINS
 		.VPWR(VPWR),
