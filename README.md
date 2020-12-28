@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!---
 # SPDX-FileCopyrightText: 2020 Efabless Corporation
 #
@@ -147,3 +148,6 @@ The firmware running on the Management Area SoC, configures the I/O pads used by
 
 [0]: openlane/README.md
 [1]: mpw-one-b.md
+=======
+# Caravel_N5_SoC
+>>>>>>> 93dbd5ddbd74afecd9d138df0b323ae5fc93b0d6
