@@ -18,12 +18,11 @@
 `timescale 1 ns / 1 ps
 
 `define   TEST_FILE   "../sw_n5/test.hex" 
-`define   SIM_TIME    600_000
+`define   SIM_TIME    3000_000
 `define   SIM_LEVEL   0
 
 `define SOC_SETUP_TIME 800*2001
 
-`include "caravel.v"
 `include "spiflash.v"
 
 `include "sst26wf080b.v"
@@ -75,6 +74,8 @@
 
 `include "user_project/NfiVe32.v"
 `include "user_project/soc_core.v"
+
+`include "caravel.v"
 
 `endif
 
@@ -142,7 +143,6 @@ module io_ports_tb;
 		RSTB <= 1'b1;	    // Release reset
 		#(`SOC_SETUP_TIME);
 		#(`SIM_TIME);
-	    $display("Monitor: Test 1 Mega-Project IO (RTL) Passed");
 	    $finish;
 	end
 
@@ -217,7 +217,7 @@ module io_ports_tb;
 
 endmodule
 
-module terminal #(parameter bit_time = 160) (input rx);
+module terminal #(parameter bit_time = 400) (input rx);
 
     integer i;
     reg [7:0] char;
