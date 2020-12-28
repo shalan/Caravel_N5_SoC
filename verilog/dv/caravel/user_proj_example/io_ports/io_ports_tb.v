@@ -18,12 +18,11 @@
 `timescale 1 ns / 1 ps
 
 `define   TEST_FILE   "../sw_n5/test.hex" 
-`define   SIM_TIME    600_000
+`define   SIM_TIME    3000_000
 `define   SIM_LEVEL   0
 
 `define SOC_SETUP_TIME 800*2001
 
-`include "caravel.v"
 `include "spiflash.v"
 
 `include "sst26wf080b.v"
@@ -76,6 +75,8 @@
 `include "user_project/NfiVe32.v"
 `include "user_project/soc_core.v"
 
+`include "caravel.v"
+
 `endif
 
 module io_ports_tb;
@@ -112,7 +113,7 @@ module io_ports_tb;
     // assign GPIOIN_Sys0_S2 = GPIO_PINS;
 
 	// Serial Terminal connected to UART0 TX*/
-    terminal term(.rx(mprj_io[22]));
+    terminal term(.rx(mprj_io[21]));  // RsTx_Sys0_SS0_S0
 
     // SPI SRAM connected to SPI0
     wire SPI_HOLD = 1'b1;
@@ -142,7 +143,6 @@ module io_ports_tb;
 		RSTB <= 1'b1;	    // Release reset
 		#(`SOC_SETUP_TIME);
 		#(`SIM_TIME);
-	    $display("Monitor: Test 1 Mega-Project IO (RTL) Passed");
 	    $finish;
 	end
 
@@ -159,10 +159,6 @@ module io_ports_tb;
 		power3 <= 1'b1;
 		#200;
 		power4 <= 1'b1;
-	end
-
-	always @(mprj_io) begin
-		#1 $display("MPRJ-IO state = %b ", mprj_io[7:0]);
 	end
 
 	wire flash_csb;
@@ -221,7 +217,7 @@ module io_ports_tb;
 
 endmodule
 
-module terminal #(parameter bit_time = 160) (input rx);
+module terminal #(parameter bit_time = 400) (input rx);
 
     integer i;
     reg [7:0] char;
