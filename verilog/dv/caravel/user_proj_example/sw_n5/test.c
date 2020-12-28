@@ -95,7 +95,6 @@ int main(){
 
     // PWM
     uart_puts (0, "PWM Test: ", 10);
-    tmr_init(0, 100, 10);       // 1usec
     pwm_init(0, 250, 99, 5);
  	pwm_enable(0);
     DELAY(300);
@@ -106,41 +105,7 @@ int main(){
     DELAY(400);
    
     // Done!
-    uart_puts(0, "Done!\n", 5);
+    uart_puts(0, "Done!\n ", 6);
+    DELAY(100);
     return 0;
 }
-
-/*
-
-    (unsigned int *)(0x49000000) = -20;
-    (unsigned int *)(0x49000004) = 50;
-    
-    int x = 10;
-    int y = 50;
-
-    int z = x * y;
-
-    x = fact(5);
-
-    gpio_write(x);
-
-    uart_init (0, 0);
-    uart_puts (0, "Hello World!\n", 13);
-
-    gpio_write(z);
-
-    for(int i=0; i<z; i++);
-
-    gpio_write(0x00AA);
-
-    x = 5;
-    //asm volatile ("csrrw   zero, mie, %0" :: "r" (x));
-    asm volatile ("csrrwi   zero, mie, %0" :: "i" (5));
-
-    x = 0x100;
-    asm volatile ("csrrw   zero, 0x310, %0" :: "r" (x));
-
-    gpio_im(0x0100);
-
-    for(int i=0; i<50; i++);
-    */

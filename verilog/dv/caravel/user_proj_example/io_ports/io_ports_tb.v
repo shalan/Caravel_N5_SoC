@@ -36,8 +36,8 @@
     `define NO_HC_CACHE
     `include "DFFRAM_beh.v"
 `else
-    `include "user_project/IPs/DFFRAM.v"
-    `include "user_project/IPs/DFFRAMBB.v"
+    // `include "user_project/IPs/DFFRAM.v"
+    // `include "user_project/IPs/DFFRAMBB.v"
 `endif
 
 `include "user_project/AHB_sys_0/AHBlite_sys_0.v"
@@ -112,7 +112,7 @@ module io_ports_tb;
     // assign GPIOIN_Sys0_S2 = GPIO_PINS;
 
 	// Serial Terminal connected to UART0 TX*/
-    terminal term(.rx(mprj_io[22]));
+    terminal term(.rx(mprj_io[21]));  // RsTx_Sys0_SS0_S0
 
     // SPI SRAM connected to SPI0
     wire SPI_HOLD = 1'b1;
@@ -159,10 +159,6 @@ module io_ports_tb;
 		power3 <= 1'b1;
 		#200;
 		power4 <= 1'b1;
-	end
-
-	always @(mprj_io) begin
-		#1 $display("MPRJ-IO state = %b ", mprj_io[7:0]);
 	end
 
 	wire flash_csb;

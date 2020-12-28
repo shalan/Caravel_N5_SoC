@@ -121,6 +121,10 @@ module user_project_wrapper (
     assign io_oeb[17:14] = {4{~fdoeb}};
 
     soc_core core(
+    `ifdef USE_POWER_PINS
+        .VPWR(vccd1),
+        .VGND(vssd1)
+    `endif
 
         .HCLK(wb_clk_i), 
 	    .HRESETn(~wb_rst_i),

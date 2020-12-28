@@ -3,6 +3,10 @@
 `timescale 1ns/1ns
 
 module soc_core (
+`ifdef USE_POWER_PINS
+	input VPWR,
+	input VGND,
+`endif
 	input HCLK, 
 	input HRESETn,
 	
@@ -182,6 +186,10 @@ module soc_core (
 
 
 	RAM_3Kx32 RAM (
+	`ifdef USE_POWER_PINS
+		.VPWR(VPWR),
+		.VGND(VGND),
+	`endif
 		.CLK(HCLK),
 		.WE(SRAMWEN_Sys0_S1),
 		.EN(SRAMCS0_Sys0_S1),
