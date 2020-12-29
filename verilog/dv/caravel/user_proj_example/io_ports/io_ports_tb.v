@@ -18,7 +18,7 @@
 `timescale 1 ns / 1 ps
 
 `define   TEST_FILE   "../sw_n5/test.hex" 
-`define   SIM_TIME    3000_000
+`define   SIM_TIME    1500_000
 `define   SIM_LEVEL   0
 
 `define SOC_SETUP_TIME 800*2001

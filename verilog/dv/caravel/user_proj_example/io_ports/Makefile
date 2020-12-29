@@ -66,5 +66,5 @@ test.hex: ../sw_n5/test.c ../sw_n5/crt0.S ../sw_n5/link.ld
 
 clean:
 	rm -f *.elf *.hex *.bin *.vvp *.vcd *.log
-
+	rm -f ../sw_n5/*.bin ../sw_n5/*.hex ../sw_n5/*.elf ../sw_n5/*.lst
 .PHONY: clean hex all

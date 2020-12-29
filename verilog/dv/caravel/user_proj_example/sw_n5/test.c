@@ -54,14 +54,14 @@ int main(){
     uart_puts (0, "Hello World!\n", 13);
     
     // GPIO
-    uart_puts (0, "GPIO Test: ", 11);
-    gpio_write(0x0055);
-    DELAY(100);
-    int gpio_data = gpio_read();
-    if(gpio_data == 0x55)
-        uart_puts(0,"Passed!\n", 8);
-    else
-        uart_puts(0,"Failed!\n", 8);
+    // uart_puts (0, "GPIO Test: ", 11);
+    // gpio_write(0x0055);
+    // DELAY(100);
+    // int gpio_data = gpio_read();
+    // if(gpio_data == 0x55)
+    //     uart_puts(0,"Passed!\n", 8);
+    // else
+    //     uart_puts(0,"Failed!\n", 8);
     
     // External SPM Accelerator
     uart_puts (0, "SPM Test: ", 10);
