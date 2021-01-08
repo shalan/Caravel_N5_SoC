@@ -35,3 +35,6 @@ The SoC utilizes the caravel IO ports and logic analyzer probes. Refer to [user_
 
 
 ### GDS View
+<p align=”center”>
+<img src="doc/gds.png" width="40%" height="40%">
+</p>
