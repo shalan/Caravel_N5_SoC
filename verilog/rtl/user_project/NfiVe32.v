@@ -1208,6 +1208,10 @@ endmodule
 	NfiVe CPU + PIC + SYSTICK 
 */
 module NfiVe32_SYS (
+`ifdef USE_POWER_PINS
+	input VPWR,
+	input VGND,
+`endif
 	input	HCLK,							// System clock
 	input	HRESETn,						// System Reset, active low
 

@@ -7,8 +7,10 @@
         // Master Interface
         input wire [31:0] HADDR,
         input wire [31:0] HWDATA, 
+        input wire [1:0] HTRANS,
         output wire [31:0] HRDATA,
         output wire        HREADY,
+        
         // Slave # 0
         output wire         HSEL_S0,
         input wire          HREADY_S0,
@@ -43,7 +45,7 @@
         always@ (posedge HCLK or negedge HRESETn) begin
         if(!HRESETn)
             APAGE <= 8'h0;
-        else if(HREADY)
+        else if(HREADY & HTRANS[1])
             APAGE <= PAGE;
         end
 
