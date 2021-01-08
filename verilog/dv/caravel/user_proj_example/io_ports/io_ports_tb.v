@@ -27,17 +27,29 @@
 
 `include "sst26wf080b.v"
 `include "23LC512.v"
+`include "caravel.v"
 
 `ifdef SIM
 
 `ifdef FAST
-    `define NO_DFFRAM
+    `define USE_DFFRAM_BEH
     `define NO_HC_CACHE
     `include "DFFRAM_beh.v"
 `else
-    `include "user_project/IPs/DFFRAM.v"
-    `include "user_project/IPs/DFFRAMBB.v"
+	`ifndef GL_UA
+		`include "user_project/IPs/DFFRAM_4K.v"
+		`include "user_project/IPs/DFFRAMBB.v"
+		`include "user_project/IPs/DMC_32x16HC.v"
+	`endif
 `endif
+
+`ifdef GL_UA
+	`include "gl/user_project/gl/apb_sys_0.v"
+	`include "gl/user_project/gl/DFFRAM_4K.v"
+	`include "gl/user_project/gl/DMC_32x16HC.v"
+	`include "gl/user_project/gl/NfiVe32_SYS.v"
+	`include "gl/user_project/gl/user_project_wrapper.v"
+`else
 
 `include "user_project/AHB_sys_0/AHBlite_sys_0.v"
 
@@ -75,8 +87,7 @@
 `include "user_project/NfiVe32.v"
 `include "user_project/soc_core.v"
 
-`include "caravel.v"
-
+`endif
 `endif
 
 module io_ports_tb;
