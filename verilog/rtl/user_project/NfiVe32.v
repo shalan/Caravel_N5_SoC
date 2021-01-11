@@ -777,7 +777,7 @@ module NfiVe32_XU(
     wire [31:0] pc2         = PC + 32'h2;
     wire [31:0] pci         = PC + imm;
     wire [31:0] alu_op2     = alu_op2_src ? R2 : imm;
-    wire [4:0]  alu_shamt 	= INSTR[`IR_shamt];
+    wire [4:0]  alu_shamt 	= alu_op2[4:0];//INSTR[`IR_shamt];
     wire [3:0]  alu_fn;
     wire        branch_taken;
 

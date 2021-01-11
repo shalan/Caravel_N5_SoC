@@ -75,7 +75,7 @@
 `include "sky130_fd_sc_hvl__lsbufhv2lv_1_wrapped.v"
 `include "mgmt_protect.v"
 `include "mgmt_protect_hv.v"
-`include "user_project_wrapper.v"
+//`include "user_project_wrapper.v"
 `include "gpio_control_block.v"
 `include "simple_por.v"
 `include "sram_1rw1r_32_256_8_sky130.v"
