@@ -1,11 +1,11 @@
 --- 
 project: 
-  description: "A template SoC for Google sponsored Open MPW shuttles for SKY130."
+  description: "NFive32-Based SoC to validate several open-source projects and IPs."
   foundry: "SkyWater"
-  git_url: "https://github.com/efabless/caravel.git"
+  git_url: "https://github.com/shalan/Caravel_N5_SoC"
   organization: "Efabless"
   organization_url: "http://efabless.com"
-  owner: "Tim Edwards"
+  owner: "Mohamed Shalan"
   process: "SKY130"
   project_name: "Caravel"
   tags: 
@@ -15,4 +15,4 @@ project:
   top_level_netlist: "verilog/gl/caravel.v"
   user_level_netlist: "verilog/gl/user_project_wrapper.v"
   version: "1.00"
-  cover_image: "doc/ciic_harness.png"
+  cover_image: "doc/gds.png"
