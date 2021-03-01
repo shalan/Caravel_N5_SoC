@@ -7,7 +7,7 @@ project:
   organization_url: "http://efabless.com"
   owner: "Mohamed Shalan"
   process: "SKY130"
-  project_name: "Caravel"
+  project_name: "Caravel_N5_SoC"
   tags: 
     - "Open MPW"
     - "Test Harness"
